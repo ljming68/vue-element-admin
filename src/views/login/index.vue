@@ -152,7 +152,7 @@ export default {
             // await 下面的代码 都是成功执行的代码
             this.$router.push('/')
           } catch (error) {
-           console.log(error)
+           console.log('login',error)
           } finally{
             // 无论是 try 还是catch 都去关闭转圈
             this.loading = false

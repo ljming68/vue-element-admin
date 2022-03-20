@@ -12,11 +12,25 @@ export function login(data) {
         data //  data:data  Es6 可以简写
     })
 }
-
-export function getInfo(token) {
+/**
+ * 获取用户的基本资料
+ * @param {*} token 
+ */
+export function getUserInfo(token) {
+    return request({
+        url: '/sys/profile',
+        method:'post'
+    })
  
 }
-
+/**
+ * 根据用户id 获取用户资料
+ */
+export function getUserDetailById(id){
+    return request({
+        url: `/sys/user/${id}`
+    })
+}
 export function logout() {
   
 }

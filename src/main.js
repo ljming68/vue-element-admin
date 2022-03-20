@@ -15,7 +15,13 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-
+// 补充
+// import {imgerror} from '@/directive'
+import * as directives from '@/directive'
+//  注册自定义指令
+Object.keys(directives).forEach(key =>{
+  Vue.directive(key,directives[key])
+})
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
@@ -23,6 +29,12 @@ Vue.use(ElementUI, { locale })
 // Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+
+// 注册指令 
+Vue.directive()
+
+
+
 
 new Vue({
   el: '#app',
