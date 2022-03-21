@@ -50,10 +50,10 @@ export default {
       if (command === "add") {
         this.$emit('addDepts',this.treeNode)
       } else if (command === "edit") {
-        alert("编辑");
+        this.$emit('editDepts',this.treeNode)
       } else {
         // 删除 
-        this.$confirm('确定要删除该部门吗').then(()=>{
+        this.$confirm('确定要删除该部门吗','删除部门',{cancelButtonText:'取消',confirmButtonText:'确定'}).then(()=>{
             // 如果点击了确定就会进入then
             return delDepartments(this.treeNode.id)
         }).then(()=>{

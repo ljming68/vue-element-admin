@@ -3,7 +3,7 @@ import {Message} from 'element-ui'
 import store from '@/store'
 import {getTimeStamp} from '@/utils/auth'
 import router from '@/router'
-const TimeOut = 3600 // 定义超时时间
+const TimeOut = 36000000000000 // 定义超时时间 3600
 
 const service = axios.create({
     // 如果执行 npm run dev  值为 /api 正确  /api 跨域代理
