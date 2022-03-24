@@ -11,6 +11,7 @@
               icon="el-icon-plus"
               size="small"
               type="primary"
+              @click="showDialog = true"
             >新增角色</el-button>
           </el-row>
           <!-- 表格 -->
@@ -66,7 +67,7 @@
     </el-card>
   </div>
   <!-- 弹层 -->
-  <el-dialog title="编辑弹层" :visible="showDialog">
+  <el-dialog title="编辑弹层" :visible="showDialog" @close="btnCancel">
     <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="120px" >
       <el-form-item style="width:80%" label="角色名称" prop="name">
         <el-input v-model="roleForm.name"></el-input>
@@ -87,7 +88,7 @@
 </template>
 
 <script>
-import {getRoleList,getCompanyInfo,deleteRole, getRoleDetail} from '@/api/setting'
+import {getRoleList,getCompanyInfo,deleteRole, getRoleDetail,updateRole, addRole} from '@/api/setting'
 import {mapGetters} from 'vuex'
 export default {
   data(){
@@ -119,7 +120,7 @@ export default {
       const {total,rows} = await getRoleList(this.page)
       this.page.total = total
       this.list = rows
-      console.log(this.list)
+      // console.log(this.list)
     },
     changePage(newPage){
       // newPage是当前点击的页码 
@@ -151,7 +152,15 @@ export default {
         await this.$refs.roleForm.validate()
         // 只有校验通过的情况下 才会执行await的下方内容
         // roleForm这个对象有id就是编辑 没有id就是新增
+        if(this.roleForm.id){
+          // await updateRole(this.roleForm)
+          console.log('修改成功')
+        }else{
+          // 新增业务
+          // await addRole(this.roleForm)
+          console.log('添加成功')
 
+        }
         // 重新拉取数据
         this.getRoleList()
         this.$message.success('操作成功')
@@ -161,6 +170,13 @@ export default {
       }
     },
     btnCancel(){
+      this.roleForm = {
+        name:'',
+        description:''
+      }
+      // 移除校验
+      this.$refs.roleForm.resetFields()
+      this.showDialog = false
       
     }
   }
