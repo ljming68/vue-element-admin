@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="app-container">
       <page-tools :show-before="true">
-        <span slot="before">共{{total}}条记录</span>
+        <span slot="before">共{{page.total}}条记录</span>
         <template v-slot:after>
           <el-button size="small" type="warning" >excel导入</el-button>
           <el-button size="small" type="danger" >excel导出</el-button>
@@ -15,10 +15,22 @@
           <el-table-column type="index" label="序号" sortable="" />
           <el-table-column prop="username" label="姓名" sortable="" />
           <el-table-column prop="workNumber" label="工号" sortable="" />
-          <el-table-column prop="formOfEmployment" label="聘用形式" sortable="" />
+          <el-table-column :formatter="formatEmployment" prop="formOfEmployment" label="聘用形式" sortable="" />
           <el-table-column prop="departmentName" label="部门" sortable="" />
-          <el-table-column prop="timeOfEntry" label="入职时间" sortable="" />
-          <el-table-column prop="enableState" label="账户状态" sortable="" />
+          
+          <el-table-column prop="timeOfEntry" label="入职时间" sortable="" >
+          <!-- 作用域插槽 -->
+            <template slot-scope="obj">
+              
+              {{obj.row.timeOfEntry | formatDate }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="enableState" label="账户状态" sortable="" >
+            <template slot-scope="{row}">
+              <!-- 根据当前状态来确定 是否打开开关 -->
+              <el-switch :value="row.enableState === 1"></el-switch>
+            </template>
+          </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template>
               <el-button type="text" size="small">查看</el-button>
@@ -48,6 +60,7 @@
 
 <script>
 import {getEmployeeList} from '@/api/employees'
+import EmployeeEnum from '@/api/constant/employees'
 export default {
   data(){
     return{
@@ -72,6 +85,12 @@ export default {
     changePage(newPage){
       this.page.page = newPage
       this.getEmployeeList()
+    },
+    // 格式化聘用形式
+    formatEmployment(row, column, cellValue, index){
+      // 找1 对应的值
+      const obj = EmployeeEnum.hireType.find(item => item.id === cellValue)
+      return obj ? obj.value : '未知'
     }
   },
 

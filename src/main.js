@@ -37,6 +37,13 @@ Vue.directive()
 import Component from '@/components'
 Vue.use(Component) // 注册自己的插件
 
+// 过滤器
+import * as filters from '@/filters' // 引入工具类
+// 注册全局的过滤器
+Object.keys(filters).forEach(key => {
+  // 注册过滤器
+  Vue.filter(key, filters[key])
+})
 
 new Vue({
   el: '#app',
