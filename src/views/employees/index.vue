@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <div class="app-container">
       <page-tools :show-before="true">
-        <span slot="before">共16条记录</span>
+        <span slot="before">共{{total}}条记录</span>
         <template v-slot:after>
           <el-button size="small" type="warning" >excel导入</el-button>
           <el-button size="small" type="danger" >excel导出</el-button>
@@ -11,14 +11,14 @@
       </page-tools>
       <!-- 放置表格和分页 -->
       <el-card>
-        <el-table border>
-          <el-table-column label="序号" sortable="" />
-          <el-table-column label="姓名" sortable="" />
-          <el-table-column label="工号" sortable="" />
-          <el-table-column label="聘用形式" sortable="" />
-          <el-table-column label="部门" sortable="" />
-          <el-table-column label="入职时间" sortable="" />
-          <el-table-column label="账户状态" sortable="" />
+        <el-table border :data="list">
+          <el-table-column type="index" label="序号" sortable="" />
+          <el-table-column prop="username" label="姓名" sortable="" />
+          <el-table-column prop="workNumber" label="工号" sortable="" />
+          <el-table-column prop="formOfEmployment" label="聘用形式" sortable="" />
+          <el-table-column prop="departmentName" label="部门" sortable="" />
+          <el-table-column prop="timeOfEntry" label="入职时间" sortable="" />
+          <el-table-column prop="enableState" label="账户状态" sortable="" />
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template>
               <el-button type="text" size="small">查看</el-button>
@@ -32,7 +32,14 @@
         </el-table>
         <!-- 分页 -->
         <el-row type="flex" justify="center" align="middle" style="height:60px">
-          <el-pagination layout="prev, pager, next" />
+          <el-pagination 
+            layout="prev, pager, next" 
+            :page-size="page.size"
+            :current-page="page.page"
+            :total="page.total"
+            @current-change ="changePage"
+
+          />
         </el-row>
       </el-card>
     </div>
@@ -40,7 +47,33 @@
 </template>
 
 <script>
+import {getEmployeeList} from '@/api/employees'
 export default {
+  data(){
+    return{
+      list:[],
+      page:{
+        page:1,
+        size:10,
+        total:0
+      }
+    }
+  },
+  created(){
+    this.getEmployeeList()
+  },
+  methods:{
+    async getEmployeeList(){
+      const {total,rows} = await getEmployeeList(this.page)
+      this.list = rows
+      this.page.total = total
+    
+    },
+    changePage(newPage){
+      this.page.page = newPage
+      this.getEmployeeList()
+    }
+  },
 
 }
 </script>
