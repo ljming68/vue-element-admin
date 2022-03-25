@@ -33,7 +33,9 @@ Vue.config.productionTip = false
 // 注册指令 
 Vue.directive()
 
-
+// 注册全局组件
+import Component from '@/components'
+Vue.use(Component) // 注册自己的插件
 
 
 new Vue({
