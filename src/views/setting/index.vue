@@ -104,7 +104,7 @@ export default {
       showDialog:false,
       roleForm:{},
       rules:{
-        name:[{required:true,$message:'角色名称不能为空',trigger: 'blur'}]
+        name:[{required:true,message:'角色名称不能为空',trigger: 'blur'}]
       },
     }
   },

@@ -6,12 +6,12 @@
         <template v-slot:after>
           <el-button size="small" type="warning" >excel导入</el-button>
           <el-button size="small" type="danger" >excel导出</el-button>
-          <el-button size="small" type="primary" >新增员工</el-button>
+          <el-button icon="plus" size="small" type="primary" @click="showDialog = true" >新增员工</el-button>
         </template>
       </page-tools>
       <!-- 放置表格和分页 -->
-      <el-card>
-        <el-table border :data="list">
+      <el-card v-loading="loading">
+        <el-table  border :data="list">
           <el-table-column type="index" label="序号" sortable="" />
           <el-table-column prop="username" label="姓名" sortable="" />
           <el-table-column prop="workNumber" label="工号" sortable="" />
@@ -56,13 +56,19 @@
         </el-row>
       </el-card>
     </div>
+    <!-- sync 修饰符  是 子组件 去改变父组件的数据的一个语法糖 -->
+    <add-employees :showDialog.sync="showDialog" />
   </div>
 </template>
 
 <script>
 import {getEmployeeList,delEmployee} from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
+import AddEmployees from './components/add-employee'
 export default {
+  components:{
+    AddEmployees
+  },
   data(){
     return{
       list:[],
@@ -70,7 +76,10 @@ export default {
         page:1,
         size:10,
         total:0
-      }
+      },
+      loading:false,
+      showDialog:false,
+      
     }
   },
   created(){
