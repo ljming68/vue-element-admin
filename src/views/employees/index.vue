@@ -57,6 +57,7 @@
       </el-card>
     </div>
     <!-- sync 修饰符  是 子组件 去改变父组件的数据的一个语法糖 -->
+    <!-- 就不需要写 @update:showDialog -->
     <add-employees :showDialog.sync="showDialog" />
   </div>
 </template>

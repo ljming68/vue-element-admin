@@ -1,7 +1,7 @@
 <template>
-  <el-dialog title="新增员工" :visible="showDialog">
+  <el-dialog title="新增员工" :visible="showDialog" @close="btnCancel">
       <!-- 表单 -->
-      <el-form :model="formData" :rules="rules" label-width="120px">
+      <el-form ref="addEmployee" :model="formData" :rules="rules" label-width="120px">
           <el-form-item label="姓名" prop="username">
               <el-input v-model="formData.username" style="width:50%" placeholder="请输入姓名"></el-input>
           </el-form-item>
@@ -40,8 +40,8 @@
       <template v-slot:footer>
           <el-row type="flex" justify="center">
               <el-col :span="18" class="dialog-footer">
-                  <el-button size="small">取消</el-button>
-                  <el-button type="primary" size="small">确定</el-button>
+                  <el-button size="small" @click="btnCancel">取消</el-button>
+                  <el-button type="primary" size="small" @click="btnOK">确定</el-button>
               </el-col>
           </el-row>
       </template>
@@ -52,6 +52,7 @@
 import {getDepartments} from "@/api/departments"
 import {tranListToTreeData} from "@/utils/index"
 import EmployeeEnum from '@/api/constant/employees'
+import {addEmployee} from '@/api/employees'
 
 export default {
   name: '',
@@ -103,7 +104,38 @@ export default {
             this.formData.departmentName = node.name
             console.log(this.formData)
             this.showTree = false
-        }
+        },
+        async btnOK(){
+            try{
+                await this.$refs.addEmployee.validate()
+                // 校验成功
+                // await addEmployee()
+                console.log("员工添加成功")
+                // 告诉父组件更新数据
+                // this.$parent 可以直接调用到父组件的实例 实际上就是父组件this
+                // this.$emit
+                this.$parent.getEmployeeList()
+                this.$parent.showDialog = false
+                // 这里不用重置表单 是因为 关闭弹层触发了 close事件 close事件绑定了btnCancel方法
+            }catch(error){
+                console.log(error)
+            }
+        },
+        btnCancel(){
+            // 重置原来的数据
+            this.formData = {
+                username: '',
+                mobile: '',
+                formOfEmployment: '',
+                workNumber: '',
+                departmentName: '',
+                timeOfEntry: '',
+                correctionTime: ''
+            }
+            this.$refs.addEmployee.resetFields() // 重置校验结果
+            // update：props名称 这样写的话 可以在父组件 直接使用sync 修饰符处理
+            this.$emit('update:showDialog',false)
+        },
     }
 }
 </script>
