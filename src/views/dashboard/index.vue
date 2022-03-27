@@ -4,11 +4,11 @@
     <page-tools :show-before="true">
       <!--插槽除了 slot="name" 还可以 v-slot  -->
       <!-- <span slot="before">我想你么们</span> -->
-      <template v-slot:before>
-        <span>我想你们</span>
-      </template>
+     
       <el-button type="primary" slot="after">导入excel</el-button>
     </page-tools>
+    <upload-excel />
+
   </div>
 </template>
 
