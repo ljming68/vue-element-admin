@@ -4,7 +4,7 @@
       <page-tools :show-before="true">
         <span slot="before">共{{page.total}}条记录</span>
         <template v-slot:after>
-          <el-button size="small" type="warning" >excel导入</el-button>
+          <el-button size="small" type="success" @click="$router.push('/import')" >excel导入</el-button>
           <el-button size="small" type="danger" >excel导出</el-button>
           <el-button icon="plus" size="small" type="primary" @click="showDialog = true" >新增员工</el-button>
         </template>
