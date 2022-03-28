@@ -17,8 +17,15 @@
                       </el-form-item>
                   </el-form>
               </el-tab-pane>
-              <el-tab-pane label="个人详情" />
-              <el-tab-pane label="岗位信息" />
+              <el-tab-pane label="个人详情">
+                  <!-- <user-info /> -->
+                  <!-- vuejs 中内置了一个组件 component 可以是任何组件  -->
+                  <!-- 动态组件 可以实现动态切换组件  is必须是变量-->
+                  <component :is="UserComponent" />
+              </el-tab-pane>
+              <el-tab-pane label="岗位信息" >
+                  <component :is="JobComponent" />
+              </el-tab-pane>
           </el-tabs>
       </el-card>
     </div>
@@ -28,9 +35,18 @@
 <script>
 import {getUserDetailById} from '@/api/user'
 import {saveUserDetailById} from '@/api/employees'
+import UserInfo from './components/user-info'
+import JobInfo from './components/job-info'
 export default {
+    components:{
+        UserInfo,
+        JobInfo
+
+    },
     data(){
         return{
+            UserComponent:'user-info', // 配合使用 component
+            JobComponent:'job-info',
             userId:this.$route.params.id,
             userInfo:{
                 username:'',
