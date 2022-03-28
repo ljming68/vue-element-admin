@@ -5,7 +5,7 @@
         <span slot="before">共{{page.total}}条记录</span>
         <template v-slot:after>
           <el-button size="small" type="success" @click="$router.push('/import')" >excel导入</el-button>
-          <el-button size="small" type="danger" >excel导出</el-button>
+          <el-button size="small" type="danger" @click="exportData" >excel导出</el-button>
           <el-button icon="plus" size="small" type="primary" @click="showDialog = true" >新增员工</el-button>
         </template>
       </page-tools>
@@ -66,6 +66,7 @@
 import {getEmployeeList,delEmployee} from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployees from './components/add-employee'
+import {formatDate} from '@/filters'
 export default {
   components:{
     AddEmployees
@@ -113,6 +114,52 @@ export default {
       }catch(error){
         console.log(error)
       }
+    },
+    exportData(){
+      // 表头对应关系
+      const headers = {
+        '姓名': 'username',
+        '手机号': 'mobile',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
+      // 懒加载
+      import('@/vendor/Export2Excel').then(async excel =>{
+        const {rows} = await getEmployeeList({page:1,size:this.page.total})
+        const data = this.formatJson(headers, rows)
+        // console.log(rows,data)
+        // debugger
+        excel.export_json_to_excel({
+          header:Object.keys(headers),
+          data,
+          filename:'员工信息表',
+          autoWidth:true,
+          bookType:'xlsx'
+        })
+      })
+    },
+    formatJson(headers, rows){
+       // 首先遍历数组
+      // [{ username: '张三'},{},{}]  => [[’张三'],[],[]]
+     
+      return rows.map(item => {
+        return Object.keys(headers).map(key =>{
+          if (headers[key] === 'timeOfEntry' || headers[key] === 'correctionTime') {
+            return formatDate(item[headers[key]]) // 返回格式化之前的时间
+          }else if(headers[key] === 'formOfEmployment'){
+            var en = EmployeeEnum.hireType.find(obj => obj.id === item[headers[key]])
+            return en ? en.value : '未知'
+          }
+          return item[headers[key]]
+        })
+      })
+
+
+      // 上面代码可以简写
+      // return rows.map(item => Object.keys(headers).map(key => item[headers[key]]))
     }
   },
 
