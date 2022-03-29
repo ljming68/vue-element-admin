@@ -8,6 +8,7 @@
       <el-button type="primary" slot="after">导入excel</el-button>
     </page-tools>
     <upload-excel />
+    <image-upload />
 
   </div>
 </template>
