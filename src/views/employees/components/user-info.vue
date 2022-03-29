@@ -1,6 +1,14 @@
 <template>
   <div class="user-info">
     <!-- 个人信息 -->
+    <!-- 打印 -->
+     <el-row type="flex" justify="end">
+      <el-tooltip content="打印个人基本信息">
+        <router-link :to="`/employees/print/${userId}?type=personal`">
+          <i class="el-icon-printer" />
+        </router-link>
+      </el-tooltip>
+    </el-row>
     <el-form label-width="220px">
       <!-- 工号 入职时间 -->
       <el-row class="inline-info">
@@ -366,6 +374,7 @@ export default {
   methods:{
         async getPersonalDetail(){
             this.formData = await getPersonalDetail(this.userId)
+            // console.log('8888',this.formData)
             if (this.formData.staffPhoto) {
               this.$refs.myStaffPhoto.fileList = [{ url: this.formData.staffPhoto, upload: true }]
             }
