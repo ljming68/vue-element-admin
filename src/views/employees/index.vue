@@ -22,6 +22,7 @@
                 :src="row.staffPhoto "
                 style="border-radius: 50%; width: 100px; height: 100px; padding: 10px"
                 alt=""
+                @click="showQrCode(row.staffPhoto)"
               >
             </template>
           </el-table-column>
@@ -71,6 +72,12 @@
     <!-- sync 修饰符  是 子组件 去改变父组件的数据的一个语法糖 -->
     <!-- 就不需要写 @update:showDialog -->
     <add-employees :showDialog.sync="showDialog" />
+    <!-- 显示二维码 -->
+    <el-dialog title="二维码" :visible.sync="showCodeDialog">
+      <el-row type="flex" justify="center">
+        <canvas ref="myCanvas" />
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -79,6 +86,7 @@ import {getEmployeeList,delEmployee} from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployees from './components/add-employee'
 import {formatDate} from '@/filters'
+import QrCode from 'qrcode'
 export default {
   components:{
     AddEmployees
@@ -93,6 +101,7 @@ export default {
       },
       loading:false,
       showDialog:false,
+      showCodeDialog:false,
       
     }
   },
@@ -172,6 +181,19 @@ export default {
 
       // 上面代码可以简写
       // return rows.map(item => Object.keys(headers).map(key => item[headers[key]]))
+    },
+    showQrCode(url){
+      console.log(url)
+      if(url){
+        this.showCodeDialog = true
+        this.$nextTick(() => {
+          // 此时可以确认已经有ref对象了
+          QrCode.toCanvas(this.$refs.myCanvas, url) // 将地址转化成二维码
+          // 如果转化的二维码后面信息 是一个地址的话 就会跳转到该地址 如果不是地址就会显示内容
+        })
+      }else{
+        this.$message.warning('该用户还未上传头像')
+      }
     }
   },
 
