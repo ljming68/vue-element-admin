@@ -51,7 +51,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
               <el-button type="text" size="small" @click="deleteEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -78,6 +78,8 @@
         <canvas ref="myCanvas" />
       </el-row>
     </el-dialog>
+    <!-- 角色分配组件 -->
+    <assign-role ref="assignRole" :showRoleDialog.sync="showRoleDialog" :user-id="userId" />
   </div>
 </template>
 
@@ -87,9 +89,11 @@ import EmployeeEnum from '@/api/constant/employees'
 import AddEmployees from './components/add-employee'
 import {formatDate} from '@/filters'
 import QrCode from 'qrcode'
+import AssignRole from './components/assign-role'
 export default {
   components:{
-    AddEmployees
+    AddEmployees,
+    AssignRole
   },
   data(){
     return{
@@ -102,6 +106,8 @@ export default {
       loading:false,
       showDialog:false,
       showCodeDialog:false,
+      showRoleDialog:false,
+      userId:'',
       
     }
   },
@@ -194,6 +200,11 @@ export default {
       }else{
         this.$message.warning('该用户还未上传头像')
       }
+    },
+    async editRole(id){
+      this.userId = id // props传值 是异步的
+      await this.$refs.assignRole.getUserDetailById(id) // 父组件调用子组件方法
+      this.showRoleDialog = true
     }
   },
 
