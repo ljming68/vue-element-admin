@@ -24,9 +24,16 @@ router.beforeEach( async(to,from,next) => {
             // vuex 中已经有了就不用获取了
             if(!store.state.user.userInfo.userId){
                 // 如果说 后续 需要根据用户资料获取数据的话 这里必须改成 同步
-                await store.dispatch('user/getUserInfo')
+                // await store.dispatch('user/getUserInfo')
+                const { roles } = await store.dispatch('user/getUserInfo')
+                // addRoutes  必须 用 next(地址) 不能用next()
+                const routes = await store.dispatch('permission/filterRoutes',roles.menus)
+                router.addRoutes(routes)
+                next(to.path)
+            }else{
+                next()
             }
-            next()
+            
         }
     }else{
         // 没 token

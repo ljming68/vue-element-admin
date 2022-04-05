@@ -3,7 +3,7 @@ import Layout from "@/layout"
 export default{
     // 路由规则
     path:'/setting', // 路由地址 /setting
-    name:'setting', // 给模块的一级路由加一个name 属性 这个属性 后面会再做权限的时候用到
+    name:'user12345', // 给模块的一级路由加一个name 属性 这个属性 后面会再做权限的时候用到
     component:Layout,
     children:[{
         // 二级路由 的path 为空的时候 此时她表示二级路由的默认路由

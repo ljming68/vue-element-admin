@@ -3,7 +3,7 @@ import Layout from "@/layout"
 export default{
     // 路由规则
     path:'/permission', // 路由地址 /permission
-    name:'permission', // 给模块的一级路由加一个name 属性 这个属性 后面会再做权限的时候用到
+    name:'permissions', // 给模块的一级路由加一个name 属性 这个属性 后面会再做权限的时候用到
     component:Layout,
     children:[{
         // 二级路由 的path 为空的时候 此时她表示二级路由的默认路由
