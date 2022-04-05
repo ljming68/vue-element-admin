@@ -15,6 +15,8 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+
+
 // 补充
 // import {imgerror} from '@/directive'
 import * as directives from '@/directive'
@@ -44,6 +46,10 @@ Object.keys(filters).forEach(key => {
   // 注册过滤器
   Vue.filter(key, filters[key])
 })
+
+// 全局混入检查对象
+import CheckPermission from '@/mixin/checkPermission'
+Vue.mixin(CheckPermission) //表示所有组件都拥有了一个检查的方法
 
 new Vue({
   el: '#app',
