@@ -51,9 +51,16 @@ Object.keys(filters).forEach(key => {
 import CheckPermission from '@/mixin/checkPermission'
 Vue.mixin(CheckPermission) //表示所有组件都拥有了一个检查的方法
 
+// 语言包
+import i18n from '@/lang'
+Vue.use(ElementUI, {
+  i18n: (key, value) => i18n.t(key, value)
+})
+
 new Vue({
   el: '#app',
   router,
   store,
+  i18n,
   render: h => h(App)
 })

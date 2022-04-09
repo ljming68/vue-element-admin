@@ -8,6 +8,7 @@ export default{
     children:[{
         // 二级路由 的path 为空的时候 此时她表示二级路由的默认路由
         path:'',
+        name:'salarys',
         component:()=>import('@/views/salarys'),
         // 路由元信息  其实是一个存储数据的地方  可以放任何内容 
         meta:{

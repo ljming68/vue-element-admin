@@ -13,6 +13,8 @@
       <screen-full class="right-menu-item" />
       <!-- 改变主题颜色 -->
       <theme-picker class="right-menu-item" />
+      <!-- 多语言 -->
+      <lang class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <!-- <img src="@/assets/common/bigUserHeader.png" class="user-avatar"> -->
